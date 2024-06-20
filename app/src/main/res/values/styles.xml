@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="VideoPlayerButton">
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:layout_width">@dimen/video_player_button_width</item>
+        <item name="android:layout_height">@dimen/video_player_button_height</item>
+    </style>
+
+    <style name="VideoPlayerButton.Play">
+        <item name="android:src">@drawable/icon_play</item>
+        <item name="android:background">@drawable/shape_round</item>
+        <item name="android:contentDescription">@string/video_player_play_description</item>
+    </style>
+
+    <style name="VideoPlayerButton.Pause">
+        <item name="android:src">@drawable/icon_pause</item>
+        <item name="android:background">@drawable/shape_round</item>
+        <item name="android:contentDescription">@string/video_player_pause_description</item>
+    </style>
+
+    <style name="VideoPlayerButton.Unmute">
+        <item name="android:src">@drawable/icon_sound_off</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:contentDescription">@string/video_player_mute_description</item>
+    </style>
+
+    <style name="VideoPlayerButton.Mute">
+        <item name="android:src">@drawable/icon_sound_on</item>
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:contentDescription">@string/video_player_unmute_description</item>
+    </style>
+
+    <style name="VideoPlayerButton.Comment">
+        <item name="android:src">@drawable/icon_comment</item>
+        <item name="android:background">@drawable/shape_round</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:contentDescription">@string/video_player_comment_description</item>
+    </style>
+
+    <style name="VideoPlayerButton.OpenFullscreen">
+        <item name="android:src">@drawable/icon_open_full</item>
+        <item name="android:background">@drawable/shape_round</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:contentDescription">@string/video_player_open_full_description</item>
+    </style>
+
+    <style name="VideoPlayerText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

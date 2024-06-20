@@ -1,0 +1,98 @@
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:orientation="vertical"
+    tools:ignore="ContentDescription"
+    tools:showIn="@layout/video_player_controller_show_in">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
+        android:paddingTop="4dp">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/button_play"
+            style="@style/VideoPlayerButton.Play"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/button_comment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/video_player_icon_tint" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/button_pause"
+            style="@style/VideoPlayerButton.Pause"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/button_comment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/video_player_icon_tint"
+            tools:visibility="gone" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/button_comment"
+            style="@style/VideoPlayerButton.Comment"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/video_player_icon_tint" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/button_open_fullscreen"
+            style="@style/VideoPlayerButton.OpenFullscreen"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/video_player_icon_tint"
+            tools:visibility="gone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:background="@color/video_player_controller_background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@id/exo_position"
+            style="@style/VideoPlayerText"
+            tools:text="00:15" />
+
+        <androidx.media3.ui.DefaultTimeBar
+            android:id="@id/exo_progress"
+            android:layout_width="0dp"
+            android:layout_height="24dp"
+            android:layout_weight="1"
+            app:buffered_color="@color/video_player_buffered_color"
+            app:played_color="@color/video_player_played_color"
+            app:unplayed_color="@color/video_player_unplayed_color" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@id/exo_duration"
+            style="@style/VideoPlayerText"
+            tools:text="00:25" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/button_sound_on"
+            style="@style/VideoPlayerButton.Mute"
+            app:tint="@color/video_player_icon_tint"
+            tools:visibility="gone" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/button_sound_off"
+            style="@style/VideoPlayerButton.Unmute"
+            app:tint="@color/video_player_icon_tint" />
+
+    </LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

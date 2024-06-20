@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="video_player_icon_tint">@color/white</color>
+    <color name="video_player_played_color">@color/white</color>
+    <color name="video_player_unplayed_color">#20000000</color>
+    <color name="video_player_buffered_color">#60000000</color>
+    <color name="video_player_controller_background">#10000000</color>
+</resources>

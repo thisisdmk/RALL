@@ -1,0 +1,97 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.kapt'
+    id 'com.google.dagger.hilt.android'
+}
+
+android {
+    namespace 'com.looter.rall'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.looter.rall"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = 17
+    }
+    buildFeatures {
+        viewBinding true
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = '1.5.9'
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.7.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.4'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.7.4'
+
+    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-graphics")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.material3:material3")
+
+    implementation "androidx.paging:paging-compose:3.3.0-alpha03"
+    implementation "androidx.paging:paging-runtime:3.3.0-alpha03"
+
+    implementation("com.google.dagger:hilt-android:2.48.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.48.1")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+
+    implementation("androidx.compose.runtime:runtime-livedata:1.7.0-alpha02")
+
+    implementation("com.google.code.gson:gson:2.10")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
+
+    debugImplementation("androidx.compose.ui:ui-tooling:1.6.1")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.6.1")
+
+    implementation "com.github.skydoves:landscapist-fresco:2.3.2"
+    implementation "com.github.skydoves:landscapist-fresco-websupport:2.3.2"
+    implementation "androidx.compose.material3:material3-window-size-class:1.2.0"
+    implementation "androidx.compose.material3:material3-adaptive:1.0.0-alpha06"
+
+    def media3Version = "1.2.1"
+    implementation "androidx.media3:media3-exoplayer:$media3Version"  // [Required] androidx.media3 ExoPlayer dependency
+    implementation "androidx.media3:media3-session:$media3Version" // [Required] MediaSession Extension dependency
+    implementation "androidx.media3:media3-ui:$media3Version" // [Required] Base Player UI
+
+    implementation "androidx.media3:media3-exoplayer-dash:$media3Version" // [Optional] If your media item is DASH
+    implementation "androidx.media3:media3-exoplayer-hls:$media3Version" // [Optional] If your media item is HLS (m3u8..)
+
+    implementation "com.github.jeziellago:compose-markdown:0.4.1"
+    implementation "net.engawapg.lib:zoomable:1.6.0"
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
