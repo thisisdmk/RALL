@@ -31,7 +31,7 @@ class RedditRepository @Inject constructor(
 
             val res = parsePostsSync(response)?.toList().orEmpty().map {
                 RedditPost(
-                    it.title,
+                    it.title.trim(),
                     it.subredditName,
                     it.numberOfComments,
                     it.upvoteScore,
@@ -102,7 +102,7 @@ class RedditRepository @Inject constructor(
                 .toCommentTree()
 
         return RedditPost(
-            title = post.title,
+            title = post.title.trim(),
             subredditName = post.subredditName, numberOfComments = post.numberOfComments,
             upvoteScore = post.upvoteScore, postId = post.id,
             type = getContent(post)
