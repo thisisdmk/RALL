@@ -27,6 +27,7 @@ fun VideoPlayer(
 ) {
     val controller = LocalVideoPlayerController.current.Controller()
     val isPlaying by controller.isPlaying.collectAsState()
+    val isEnded by controller.isEnded.collectAsState()
     val isMute by controller.isMute.collectAsState()
 
     Box {
@@ -37,6 +38,7 @@ fun VideoPlayer(
                 val binding = VideoPlayerViewBinding.inflate(LayoutInflater.from(context))
                 val playerView = binding.root.apply {
                     playButton.setOnClickListener { controller.play() }
+                    replayButton.setOnClickListener { controller.play() }
                     pauseButton.setOnClickListener { controller.pause() }
                     soundOnButton.setOnClickListener { controller.mute() }
                     soundOffButton.setOnClickListener { controller.unmute() }
@@ -58,10 +60,17 @@ fun VideoPlayer(
                 Log.d("VideoPlayer", "update{}")
                 if (isPlaying) {
                     it.playButton.visibility = View.GONE
+                    it.replayButton.visibility = View.GONE
                     it.pauseButton.visibility = View.VISIBLE
                 } else {
                     it.pauseButton.visibility = View.GONE
-                    it.playButton.visibility = View.VISIBLE
+                    if (isEnded) {
+                        it.playButton.visibility = View.GONE
+                        it.replayButton.visibility = View.VISIBLE
+                    } else {
+                        it.replayButton.visibility = View.GONE
+                        it.playButton.visibility = View.VISIBLE
+                    }
                 }
                 if (isMute) {
                     it.soundOnButton.visibility = View.GONE
@@ -85,6 +94,8 @@ fun VideoPlayer(
 
 private val PlayerView.playButton: AppCompatImageButton
     get() = findViewById(R.id.button_play)
+private val PlayerView.replayButton: AppCompatImageButton
+    get() = findViewById(R.id.button_replay)
 private val PlayerView.pauseButton: AppCompatImageButton
     get() = findViewById(R.id.button_pause)
 private val PlayerView.soundOnButton: AppCompatImageButton

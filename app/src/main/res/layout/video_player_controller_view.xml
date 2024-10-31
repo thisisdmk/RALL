@@ -26,6 +26,16 @@
             app:tint="@color/video_player_icon_tint" />
 
         <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/button_replay"
+            style="@style/VideoPlayerButton.Replay"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/button_comment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/video_player_icon_tint"
+            tools:visibility="gone" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/button_pause"
             style="@style/VideoPlayerButton.Pause"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -13,6 +13,12 @@
         <item name="android:contentDescription">@string/video_player_play_description</item>
     </style>
 
+    <style name="VideoPlayerButton.Replay">
+        <item name="android:src">@drawable/icon_replay</item>
+        <item name="android:background">@drawable/shape_round</item>
+        <item name="android:contentDescription">@string/video_player_replay_description</item>
+    </style>
+
     <style name="VideoPlayerButton.Pause">
         <item name="android:src">@drawable/icon_pause</item>
         <item name="android:background">@drawable/shape_round</item>

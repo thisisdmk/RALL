@@ -45,6 +45,7 @@ data class PlayerKey(
 class VideoPlayerController(
     private val context: Context
 ) {
+    private val _isEnded = MutableStateFlow(false)
     private val _isPlaying = MutableStateFlow(true)
     private val _isMute = MutableStateFlow(false)
     private val urlPlaybackPositionMap = mutableStateMapOf<String, Long>()
@@ -80,6 +81,11 @@ class VideoPlayerController(
                     super.onIsPlayingChanged(isPlaying)
                     _isPlaying.value = isPlaying
                 }
+
+                override fun onPlaybackStateChanged(playbackState: Int) {
+                    super.onPlaybackStateChanged(playbackState)
+                    _isEnded.value = playbackState == Player.STATE_ENDED
+                }
             })
         }
     }
@@ -103,6 +109,7 @@ class VideoPlayerController(
 
     inner class Controller {
         val isPlaying: StateFlow<Boolean> = _isPlaying
+        val isEnded: StateFlow<Boolean> = _isEnded
         val isMute: StateFlow<Boolean> = _isMute
         fun mute() {
             exoPlayer.volume = 0f
@@ -112,7 +119,13 @@ class VideoPlayerController(
             exoPlayer.volume = 1f
         }
 
-        fun play() = exoPlayer.play()
+        fun play() {
+            if (exoPlayer.playbackState == Player.STATE_ENDED) {
+                exoPlayer.seekTo(0)
+            }
+            exoPlayer.play()
+        }
+
         fun pause() = exoPlayer.pause()
 
         fun installGifPlayer(into: PlayerView) {
