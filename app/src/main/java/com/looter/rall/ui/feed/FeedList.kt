@@ -52,7 +52,7 @@ fun FeedList(
             key = { _, item -> item.redditName },
             itemContent = { _, item ->
                 PostCard(item, ListPlayerKey, controller, playerState, windowSize)
-                HorizontalDivider(color = MaterialTheme.colorScheme.onPrimary)
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             })
     }
 }
