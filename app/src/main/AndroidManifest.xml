@@ -21,15 +21,13 @@
             android:name=".MainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:exported="true"
-            android:label="@string/title_activity_man"
+            android:label="@string/title_activity_main"
             android:supportsPictureInPicture="true"
             android:theme="@style/Theme.RALL">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
