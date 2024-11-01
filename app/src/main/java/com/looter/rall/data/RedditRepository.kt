@@ -151,6 +151,7 @@ class RedditRepository @Inject constructor(
                     text = item.rawText,
                     depth = item.depth,
                     url = item.mediaMeta?.url,
+                    author = item.author,
                     name = item.fullName,
                     parentName = item.parentId
                 ).let {

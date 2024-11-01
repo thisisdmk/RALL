@@ -6,12 +6,13 @@ data class CommentItem(
     val text: String = "",
     val depth: Int = 0,
     val url: String? = null,
+    val author: String = "",
     val name: String = "",
     val parentName: String = "",
     val isMoreDetails: Boolean = false,
     val moreChildrenIds: String? = null,
 ) {
-    val userName: String = "u/username"
+    val userName: String = "u/$author"
     val key: String = "${id}_${isMoreDetails}"
 }
 

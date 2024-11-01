@@ -180,7 +180,7 @@ private fun Collapsed(item: CommentItem) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "u/username",
+            text = item.userName,
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
