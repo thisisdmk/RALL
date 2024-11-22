@@ -77,7 +77,12 @@ class RedditRepository @Inject constructor(
         } else {
             Link(
                 post.url, post.text,
-                post.previews?.resolutions.orEmpty().plus(post.previews?.original!!)//todo npe
+                post.previews?.resolutions.orEmpty().let {
+                    val orig = post.previews?.original
+                    if (orig != null) {
+                        it.plus(orig)
+                    } else it
+                }
             )
         }
     }

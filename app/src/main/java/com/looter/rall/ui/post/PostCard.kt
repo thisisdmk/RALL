@@ -188,7 +188,7 @@ fun PostCard(
                     .height(heightDp)
                     .topBorder(MaterialTheme.colorScheme.outlineVariant, 1.0f)
                     .bottomBorder(MaterialTheme.colorScheme.outlineVariant, 1.0f)
-            ) { controller.navigateToImage(image.original.url) }
+            ) { controller.navigateToImage(item) }
         },
         videoContent = { video ->
             val thumbnail = video.thumbnailUrls.pickWidthGreaterThan(windowSize.width)
@@ -201,7 +201,7 @@ fun PostCard(
                 playerState = playerState,
                 screenKey = screenKey,
                 isGifPlayer = video.asGif
-            ) { controller.navigateToVideo(item.redditName, video.url, item.postId) }
+            ) { controller.navigateToVideo(item) }
         },
         galleryContent = { gallery ->
             val previews = gallery.items.map {

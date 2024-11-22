@@ -5,10 +5,6 @@ import androidx.core.text.parseAsHtml
 import org.json.JSONArray
 import org.json.JSONObject
 
-data class RedditMedia(
-    val url: String, val width: Int, val height: Int
-)
-
 data class MediaPreviews(
     val original: RedditMedia,
     val resolutions: List<RedditMedia> = emptyList(),

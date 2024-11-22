@@ -1,5 +1,6 @@
 package com.looter.rall.ui.postdetail
 
+import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
@@ -12,12 +13,17 @@ import com.looter.rall.domain.RedditPost
 import com.looter.rall.domain.findAndReplace
 import com.looter.rall.domain.findNode
 import com.looter.rall.domain.flatMapToItems
+import com.looter.rall.domain.fromJson
+import com.looter.rall.ui.post.CURRENT_POST
+import com.looter.rall.ui.post.dataStore
 import com.looter.rall.ui.postdetail.state.CollapsedState
 import com.looter.rall.ui.postdetail.state.LoadingMoreState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,7 +31,8 @@ import javax.inject.Inject
 @HiltViewModel
 class PostDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val repository: RedditRepository
+    private val repository: RedditRepository,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val itemId: String = checkNotNull(savedStateHandle["itemId"])
@@ -48,9 +55,18 @@ class PostDetailViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             try {
-                val (details, comments) = repository.getPostDetails(itemId)
-                _postDetails.value = details
-                updateComments(comments)
+                context.dataStore.data.map { preferences ->
+                    preferences[CURRENT_POST]?.let {
+                        fromJson(it)
+                    }
+                }.collect { value ->
+                    if (value != null) {
+                        _postDetails.value = value
+                    }
+                    val (details, comments) = repository.getPostDetails(itemId)
+                    _postDetails.value = details
+                    updateComments(comments)
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
