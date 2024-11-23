@@ -1,9 +1,9 @@
 plugins {
-    id 'com.android.application'
-    id 'org.jetbrains.kotlin.android'
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.jetbrains.kotlin.android)
     id 'org.jetbrains.kotlin.kapt'
-    id 'com.google.dagger.hilt.android'
-    id 'org.jetbrains.kotlin.plugin.serialization'
+    alias(libs.plugins.hilt.android.plugin)
+    alias(libs.plugins.kotlin.plugin.serialization)
 }
 
 android {
@@ -44,59 +44,53 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.11.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.7.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.4'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.7.4'
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.runtime.livedata)
 
-    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
 
-    implementation "androidx.paging:paging-compose:3.3.0-alpha03"
-    implementation "androidx.paging:paging-runtime:3.3.0-alpha03"
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.paging.runtime)
 
-    implementation("com.google.dagger:hilt-android:2.48.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.48.1")
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
-    implementation("androidx.compose.runtime:runtime-livedata:1.7.0-alpha02")
+    implementation(libs.gson)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.converter.scalars)
 
-    implementation("com.google.code.gson:gson:2.10")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
+    debugImplementation(libs.androidx.ui.tooling)
+    implementation(libs.ui.tooling.preview)
 
-    debugImplementation("androidx.compose.ui:ui-tooling:1.6.1")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.6.1")
+    implementation(libs.landscapist.fresco)
+    implementation(libs.landscapist.fresco.websupport)
+    implementation(libs.androidx.material3.windowsizeclass)
+    implementation(libs.androidx.material3.adaptive)
 
-    implementation "com.github.skydoves:landscapist-fresco:2.3.2"
-    implementation "com.github.skydoves:landscapist-fresco-websupport:2.3.2"
-    implementation "androidx.compose.material3:material3-window-size-class:1.2.0"
-    implementation "androidx.compose.material3:material3-adaptive:1.0.0-alpha06"
+    implementation(libs.androidx.media3.exoplayer)// [Required] androidx.media3 ExoPlayer dependency
+    implementation(libs.androidx.media3.session) // [Required] MediaSession Extension dependency
+    implementation(libs.androidx.media3.ui) // [Required] Base Player UI
+    implementation(libs.androidx.media3.exoplayer.dash) // [Optional] If your media item is DASH
+    implementation(libs.androidx.media3.exoplayer.hls) // [Optional] If your media item is HLS
 
-    def media3Version = "1.2.1"
-    implementation "androidx.media3:media3-exoplayer:$media3Version"  // [Required] androidx.media3 ExoPlayer dependency
-    implementation "androidx.media3:media3-session:$media3Version" // [Required] MediaSession Extension dependency
-    implementation "androidx.media3:media3-ui:$media3Version" // [Required] Base Player UI
+    implementation(libs.compose.markdown)
+    implementation(libs.zoomable)
 
-    implementation "androidx.media3:media3-exoplayer-dash:$media3Version" // [Optional] If your media item is DASH
-    implementation "androidx.media3:media3-exoplayer-hls:$media3Version" // [Optional] If your media item is HLS (m3u8..)
+    implementation(libs.kotlinx.serialization.core)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.datastore.preferences)
 
-    implementation "com.github.jeziellago:compose-markdown:0.4.1"
-    implementation "net.engawapg.lib:zoomable:1.6.0"
-
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.6.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
-    implementation("androidx.datastore:datastore-preferences:1.1.1")
-
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
