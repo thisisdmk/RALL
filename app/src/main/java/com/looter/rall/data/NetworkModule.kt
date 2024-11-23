@@ -1,5 +1,8 @@
 package com.looter.rall.data
 
+import com.looter.rall.data.api.RedditApi
+import com.looter.rall.data.api.RedditApiImpl
+import com.looter.rall.data.api.RedditApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,8 +30,13 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun providesService(retrofit: Retrofit): Service {
-        return retrofit.create(Service::class.java)
+    fun providesService(retrofit: Retrofit): RedditApiService {
+        return retrofit.create(RedditApiService::class.java)
     }
 
+    @Singleton
+    @Provides
+    fun providesRedditApi(service: RedditApiService): RedditApi {
+        return RedditApiImpl(service)
+    }
 }

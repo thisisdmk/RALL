@@ -2,6 +2,9 @@ package com.looter.rall.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.looter.rall.data.api.RedditApi
+import com.looter.rall.data.api.models.RedditCommentJson
+import com.looter.rall.data.api.models.RedditPostJson
 import com.looter.rall.domain.CommentItem
 import com.looter.rall.domain.CommentTree
 import com.looter.rall.domain.GalleryItem
@@ -11,34 +14,17 @@ import com.looter.rall.domain.PostContent.Image
 import com.looter.rall.domain.PostContent.Link
 import com.looter.rall.domain.PostContent.Text
 import com.looter.rall.domain.PostContent.Video
-import com.looter.rall.domain.RedditCommentJson
 import com.looter.rall.domain.RedditPost
-import com.looter.rall.domain.RedditPostJson
-import com.looter.rall.domain.toRedditComments
-import org.json.JSONArray
-import org.json.JSONException
-import org.json.JSONObject
 import javax.inject.Inject
 
 class RedditRepository @Inject constructor(
-    private val service: Service
+    private val redditApi: RedditApi,
 ) : PagingSource<String, RedditPost>() {
 
     override suspend fun load(params: LoadParams<String>): LoadResult<String, RedditPost> {
         return try {
             val afterKey = params.key
-            val response = service.getPostListAfter(afterKey).body()
-
-            val res = parsePostsSync(response)?.toList().orEmpty().map {
-                RedditPost(
-                    it.title.trim(),
-                    it.subredditName,
-                    it.numberOfComments,
-                    it.upvoteScore,
-                    getContent(it),
-                    it.id
-                )
-            }
+            val res = redditApi.getPostsAfter(afterKey).mapNotNull { jsonToPost(it) }
             LoadResult.Page(
                 data = res, prevKey = afterKey, nextKey = res.lastOrNull()?.redditName
             )
@@ -48,70 +34,88 @@ class RedditRepository @Inject constructor(
         }
     }
 
-    private fun getContent(post: RedditPostJson): PostContent {
+    private fun jsonToPost(json: RedditPostJson): RedditPost? {
+        val type = getContent(json) ?: return null
+        return RedditPost(
+            json.title.trim(),
+            json.subredditName,
+            json.numberOfComments,
+            json.upvoteScore,
+            type,
+            json.id
+        )
+    }
+
+    private fun getContent(post: RedditPostJson): PostContent? {
         return if (post.isVideo) {
-            Video(
-                url = post.dashUrl.orEmpty(),
-                thumbnailUrls = post.previews?.resolutions.orEmpty(),
-                asGif = false
-            )
+            videoContent(post)
         } else if (post.isGallery) {
-            Gallery(post.galleryData.map {
+            galleryContent(post)
+        } else if (post.isGif) {
+            gifContent(post)
+        } else if (post.isImage) {
+            imageContent(post)
+        } else if (post.isText) {
+            Text(post.text)
+        } else {
+            linkContent(post)
+        }
+    }
+
+    private fun videoContent(post: RedditPostJson): Video? {
+        val dashUrl = post.dashUrl
+        if (dashUrl.isNullOrBlank()) return null
+        return Video(
+            url = dashUrl,
+            thumbnailUrls = post.previews?.resolutions.orEmpty(),
+            asGif = false
+        )
+    }
+
+    private fun galleryContent(post: RedditPostJson): Gallery? {
+        val items = post.galleryData.mapNotNull {
+            if (it.original != null) {
                 GalleryItem(
                     original = it.original,
                     previews = it.previews,
                     caption = it.caption,
                     outboundUrl = it.outboundUrl
                 )
-            })
-        } else if (post.isGif) {
-            Video(
-                url = post.gifUrl!!,
-                thumbnailUrls = post.previews?.resolutions.orEmpty(),
-                asGif = true
-            )
-        } else if (post.isImage) {
-            Image(post.previews?.original!!, post.previews?.resolutions.orEmpty())
-        } else if (post.isText) {
-            Text(post.text)
-        } else {
-            Link(
-                post.url, post.text,
-                post.previews?.resolutions.orEmpty().let {
-                    val orig = post.previews?.original
-                    if (orig != null) {
-                        it.plus(orig)
-                    } else it
-                }
-            )
+            } else null
         }
+        return if (items.isEmpty()) null else Gallery(items)
+    }
+
+    private fun gifContent(post: RedditPostJson): Video? {
+        val gifUrl = post.gifUrl
+        if (gifUrl.isNullOrBlank()) return null
+        return Video(
+            url = gifUrl,
+            thumbnailUrls = post.previews?.resolutions.orEmpty(),
+            asGif = true
+        )
+    }
+
+    private fun imageContent(post: RedditPostJson): Image? {
+        val original = post.previews?.original ?: return null
+        return Image(original, post.previews?.resolutions.orEmpty())
+    }
+
+    private fun linkContent(post: RedditPostJson): Link? {
+        val resolutions = post.previews?.resolutions
+        if (resolutions.isNullOrEmpty()) return null
+        val orig = post.previews?.original
+        val previews = if (orig != null) resolutions + orig else resolutions
+        return Link(post.url, post.text, previews)
     }
 
     override fun getRefreshKey(state: PagingState<String, RedditPost>): String? = null
 
     suspend fun getPostDetails(postId: String): Pair<RedditPost, List<CommentTree>> {
-        val response = service.getPost(postId).body()
-
-        val childrenArray = JSONArray(response)
-        val postData = childrenArray.getJSONObject(0)
-            .getJSONObject("data")
-            .getJSONArray("children")
-            .getJSONObject(0)
-            .getJSONObject("data")
-        val post = RedditPostJson(postData)
-        val comments =
-            childrenArray.optJSONObject(1)
-                ?.optJSONObject("data")
-                ?.optJSONArray("children")
-                .let(::toRedditComments)
-                .toCommentTree()
-
-        return RedditPost(
-            title = post.title.trim(),
-            subredditName = post.subredditName, numberOfComments = post.numberOfComments,
-            upvoteScore = post.upvoteScore, postId = post.id,
-            type = getContent(post)
-        ) to comments
+        val response = redditApi.getPostAndComments(postId)
+        val postJson = response.first
+        val comments = response.second
+        return jsonToPost(postJson)!! to comments.toCommentTree()
     }
 
     suspend fun getMoreComments(
@@ -119,18 +123,11 @@ class RedditRepository @Inject constructor(
         postName: String,
         moreChildrenIds: String
     ): List<CommentTree> {
-        val response = service.getMoreComments(postName, moreChildrenIds).body()
-        return response?.let(::JSONObject)
-            ?.optJSONObject("json")
-            ?.optJSONObject("data")
-            ?.optJSONArray("things")
-            .let(::toRedditComments)
-            .let {
-                val map = it.groupBy(RedditCommentJson::parentId)
-                map[parentName]?.toCommentTree { c ->
-                    map[c.fullName].orEmpty()
-                }.orEmpty()
-            }
+        val response2 = redditApi.getMoreComments(postName, moreChildrenIds)
+        val map = response2.groupBy(RedditCommentJson::parentId)
+        return map[parentName]?.toCommentTree { c ->
+            map[c.fullName].orEmpty()
+        }.orEmpty()
     }
 
     private fun List<RedditCommentJson>.toCommentTree(getChildren: (RedditCommentJson) -> List<RedditCommentJson> = { it.replies }): List<CommentTree> =
@@ -164,23 +161,4 @@ class RedditRepository @Inject constructor(
                 }
             }
         }
-}
-
-fun parsePostsSync(response: String?): LinkedHashSet<RedditPostJson>? {
-    val newPosts: LinkedHashSet<RedditPostJson> = LinkedHashSet()
-    return try {
-        val jsonResponse = JSONObject(response!!)
-        val dataChildren = jsonResponse.getJSONObject("data").getJSONArray("children")
-
-        for (i in 0 until dataChildren.length()) {
-            if (dataChildren.getJSONObject(i).getString("kind") == "t3") {
-                val postData = dataChildren.getJSONObject(i).getJSONObject("data")
-                newPosts.add(RedditPostJson(postData))
-            }
-        }
-        newPosts
-    } catch (e: JSONException) {
-        e.printStackTrace()
-        null
-    }
 }

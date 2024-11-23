@@ -1,4 +1,4 @@
-package com.looter.rall.domain
+package com.looter.rall.data.api.models
 
 import org.json.JSONArray
 import org.json.JSONObject
@@ -33,7 +33,7 @@ data class RedditCommentJson(
         data.optJSONObject("replies")
             ?.optJSONObject("data")
             ?.optJSONArray("children")
-            .let(::toRedditComments)
+            .let(::toRedditCommentJsons)
     }
     val mediaMeta by lazy { data.optJSONObject("media_metadata")?.let(::CommentMediaMeta) }
 
@@ -42,8 +42,6 @@ data class RedditCommentJson(
     val moreChildrenIds by lazy { moreChildren.map(JSONArray::getString).joinToString() }
 
 }
-
-fun <T> JSONArray.map(block: JSONArray.(Int) -> T) = (0 until length()).map { block(it) }
 
 data class CommentMediaMeta(
     private val metadata: JSONObject
@@ -64,7 +62,7 @@ data class CommentMediaMeta(
         }
 }
 
-fun toRedditComments(commentsArray: JSONArray?): List<RedditCommentJson> = commentsArray?.map {
+fun toRedditCommentJsons(commentsArray: JSONArray?): List<RedditCommentJson> = commentsArray?.map {
     val typedJson = getJSONObject(it)
     RedditCommentJson(
         typedJson.getJSONObject("data"),
