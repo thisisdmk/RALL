@@ -34,12 +34,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.media3.common.util.UnstableApi
-import com.looter.rall.domain.CommentItem
+import com.looter.data.feed.models.CommentItem
 import com.looter.rall.ui.postdetail.state.CollapsedState
 import com.looter.rall.ui.postdetail.state.LoadingMoreState
 import com.looter.rall.ui.theme.AppTheme
-import com.looter.rall.ui.videoplayer.LocalVideoPlayerController
-import com.looter.rall.ui.videoplayer.VideoPlayerController
 import dev.jeziellago.compose.markdowntext.MarkdownText
 
 private const val MinRowHeight = 20
@@ -216,7 +214,9 @@ private fun Depth(depth: Int) {
 private fun CommentRowPreview() {
     AppTheme(true) {
         CompositionLocalProvider(
-            LocalVideoPlayerController provides VideoPlayerController(LocalContext.current)
+            com.looter.rall.videoplayer.LocalVideoPlayerController provides com.looter.rall.videoplayer.VideoPlayerController(
+                LocalContext.current
+            )
         ) {
             Surface {
                 Column(

@@ -5,7 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import com.looter.rall.domain.RedditPost
+import com.looter.data.feed.models.RedditPost
 
 interface PostCardController {
     fun navigateToImage(post: RedditPost)

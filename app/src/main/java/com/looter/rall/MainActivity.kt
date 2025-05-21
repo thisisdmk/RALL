@@ -17,11 +17,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.looter.rall.ui.feed.FeedScreen
+import com.looter.rall.ui.feedlist.FeedScreen
 import com.looter.rall.ui.postdetail.PostDetailScreen
 import com.looter.rall.ui.theme.AppTheme
-import com.looter.rall.ui.videoplayer.LocalVideoPlayerController
-import com.looter.rall.ui.videoplayer.VideoPlayerController
+import com.looter.rall.videoplayer.LocalVideoPlayerController
+import com.looter.rall.videoplayer.VideoPlayerController
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -86,6 +86,7 @@ fun ScreenTransition(context: Context) {
             "galleryViewer/{urls}",
             arguments = listOf(navArgument("urls") { type = StringType })
         ) {
+           //todo передавать itemId
             PostDetailScreen(isFullScreen = true)
 //            GalleryScreen(it.arguments?.getString("urls")!!.split(",").map(String::trim))
         }

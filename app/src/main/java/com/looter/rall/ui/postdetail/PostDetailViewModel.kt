@@ -6,14 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.looter.rall.data.RedditRepository
-import com.looter.rall.domain.CommentItem
-import com.looter.rall.domain.CommentTree
-import com.looter.rall.domain.RedditPost
-import com.looter.rall.domain.findAndReplace
-import com.looter.rall.domain.findNode
-import com.looter.rall.domain.flatMapToItems
-import com.looter.rall.domain.fromJson
+import com.looter.data.feed.models.CommentItem
+import com.looter.data.feed.models.CommentTree
+import com.looter.data.feed.models.RedditPost
+import com.looter.data.feed.models.findAndReplace
+import com.looter.data.feed.models.findNode
+import com.looter.data.feed.models.flatMapToItems
+import com.looter.data.feed.models.fromJson
 import com.looter.rall.ui.post.CURRENT_POST
 import com.looter.rall.ui.post.dataStore
 import com.looter.rall.ui.postdetail.state.CollapsedState
@@ -31,7 +30,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PostDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val repository: RedditRepository,
+    private val repository: com.looter.data.feed.RedditRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 

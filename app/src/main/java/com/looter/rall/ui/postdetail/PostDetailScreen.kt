@@ -8,15 +8,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.common.util.UnstableApi
-import com.looter.rall.domain.PostContent
-import com.looter.rall.ui.feed.ListPlayerKey
+import com.looter.data.feed.models.PostContent
+import com.looter.rall.ui.feedlist.ListPlayerKey
 import com.looter.rall.ui.fullscreen.GalleryScreen
 import com.looter.rall.ui.fullscreen.ImageScreen
 import com.looter.rall.ui.fullscreen.OnBack
 import com.looter.rall.ui.fullscreen.VideoScreen
 import com.looter.rall.ui.post.PostCard
-import com.looter.rall.ui.videoplayer.LocalVideoPlayerController
-import com.looter.rall.ui.videoplayer.PlayerKey
+import com.looter.rall.videoplayer.LocalVideoPlayerController
+import com.looter.rall.videoplayer.PlayerKey
 
 const val PostDetailsPlayerKey = "onDetails"
 

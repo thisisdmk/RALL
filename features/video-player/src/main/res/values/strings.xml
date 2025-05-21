@@ -1,0 +1,11 @@
+<resources>
+    <string name="video_player_open_full_description">Open fullscreen</string>
+    <string name="video_player_comment_description">Go to post</string>
+    <string name="video_player_pause_description">Pause</string>
+    <string name="video_player_play_description">Play</string>
+    <string name="video_player_replay_description">Replay</string>
+    <string name="video_player_mute_description">Mute</string>
+    <string name="video_player_unmute_description">Unmute</string>
+    <string name="video_player_thumbnail_content_description">Video thumbnail</string>
+    <string name="video_player_thumbnail_play_button_content_description">PLay video</string>
+</resources>

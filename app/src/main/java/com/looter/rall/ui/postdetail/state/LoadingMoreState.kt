@@ -6,7 +6,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
-import com.looter.rall.domain.CommentItem
+import com.looter.data.feed.models.CommentItem
 
 data class LoadingMore(
     val isLoading: Boolean = false

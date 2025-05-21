@@ -1,5 +1,6 @@
 package com.looter.rall.ui.fullscreen
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.annotation.OptIn
@@ -12,13 +13,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.media3.common.util.Log
 import androidx.media3.common.util.UnstableApi
-import com.looter.rall.ui.feed.ListPlayerKey
+import com.looter.rall.ui.feedlist.ListPlayerKey
 import com.looter.rall.ui.postdetail.PostDetailsPlayerKey
-import com.looter.rall.ui.videoplayer.LocalVideoPlayerController
-import com.looter.rall.ui.videoplayer.PlayerKey
-import com.looter.rall.ui.videoplayer.VideoPlayer
+import com.looter.rall.videoplayer.LocalVideoPlayerController
+import com.looter.rall.videoplayer.PlayerKey
+import com.looter.rall.videoplayer.VideoPlayer
 import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.launch
 

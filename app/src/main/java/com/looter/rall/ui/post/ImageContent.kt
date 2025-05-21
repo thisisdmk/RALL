@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.toSize
-import com.looter.rall.ui.videoplayer.Loading
+import com.looter.rall.videoplayer.Loading
 import com.skydoves.landscapist.ImageOptions
 import com.skydoves.landscapist.fresco.FrescoImage
 import com.skydoves.landscapist.fresco.FrescoImageState

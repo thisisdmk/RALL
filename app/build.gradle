@@ -41,6 +41,9 @@ android {
 }
 
 dependencies {
+    implementation project(':features:video-player')
+    implementation project(':data:feed')
+//    implementation project(':reddit-api')
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -62,13 +65,12 @@ dependencies {
     implementation(libs.androidx.paging.runtime)
 
     implementation(libs.hilt.android)
+
+
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
-    implementation(libs.gson)
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.converter.scalars)
+    implementation(libs.androidx.media3.exoplayer)
 
     debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.ui.tooling.preview)
@@ -78,17 +80,10 @@ dependencies {
     implementation(libs.androidx.material3.windowsizeclass)
     implementation(libs.androidx.material3.adaptive)
 
-    implementation(libs.androidx.media3.exoplayer)// [Required] androidx.media3 ExoPlayer dependency
-    implementation(libs.androidx.media3.session) // [Required] MediaSession Extension dependency
-    implementation(libs.androidx.media3.ui) // [Required] Base Player UI
-    implementation(libs.androidx.media3.exoplayer.dash) // [Optional] If your media item is DASH
-    implementation(libs.androidx.media3.exoplayer.hls) // [Optional] If your media item is HLS
-
     implementation(libs.compose.markdown)
     implementation(libs.zoomable)
 
-    implementation(libs.kotlinx.serialization.core)
-    implementation(libs.kotlinx.serialization.json)
+
     implementation(libs.androidx.datastore.preferences)
 
 }

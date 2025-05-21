@@ -36,21 +36,21 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.util.UnstableApi
+import com.looter.data.feed.models.PostContent
+import com.looter.data.feed.models.PostContent.Gallery
+import com.looter.data.feed.models.PostContent.Image
+import com.looter.data.feed.models.PostContent.Link
+import com.looter.data.feed.models.PostContent.Text
+import com.looter.data.feed.models.PostContent.Video
+import com.looter.data.feed.models.RedditMedia
+import com.looter.data.feed.models.RedditPost
 import com.looter.rall.R
-import com.looter.rall.domain.PostContent
-import com.looter.rall.domain.PostContent.Gallery
-import com.looter.rall.domain.PostContent.Image
-import com.looter.rall.domain.PostContent.Link
-import com.looter.rall.domain.PostContent.Text
-import com.looter.rall.domain.PostContent.Video
-import com.looter.rall.domain.RedditMedia
-import com.looter.rall.domain.RedditPost
 import com.looter.rall.ui.bottomBorder
 import com.looter.rall.ui.theme.AppTheme
 import com.looter.rall.ui.topBorder
-import com.looter.rall.ui.videoplayer.LocalVideoPlayerController
-import com.looter.rall.ui.videoplayer.VideoPlayerController
-import com.looter.rall.ui.videoplayer.VideoPlayerWithThumbnail
+import com.looter.rall.videoplayer.LocalVideoPlayerController
+import com.looter.rall.videoplayer.VideoPlayerController
+import com.looter.rall.videoplayer.VideoPlayerWithThumbnail
 
 @Composable
 fun PostCardLayout(
