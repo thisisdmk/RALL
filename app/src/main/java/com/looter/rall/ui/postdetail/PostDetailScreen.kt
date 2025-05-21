@@ -7,13 +7,16 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.media3.common.util.UnstableApi
+import androidx.navigation.NavController
 import com.looter.data.feed.models.PostContent
 import com.looter.rall.ui.feedlist.ListPlayerKey
 import com.looter.rall.ui.fullscreen.GalleryScreen
 import com.looter.rall.ui.fullscreen.ImageScreen
 import com.looter.rall.ui.fullscreen.OnBack
 import com.looter.rall.ui.fullscreen.VideoScreen
+import com.looter.rall.ui.post.DefaultPostCardController
 import com.looter.rall.ui.post.PostCard
 import com.looter.rall.videoplayer.LocalVideoPlayerController
 import com.looter.rall.videoplayer.PlayerKey
@@ -24,6 +27,7 @@ const val PostDetailsPlayerKey = "onDetails"
 @Composable
 fun PostDetailScreen(
     viewModel: PostDetailViewModel = hiltViewModel(),
+    navController: NavController,
     isFullScreen: Boolean = false
 ) {
     val details = viewModel.postDetails.collectAsState()
@@ -53,7 +57,18 @@ fun PostDetailScreen(
         }
     } else {
         CommentList(
-            { PostCard(details.value, PostDetailsPlayerKey, playerState = playerState) },
+            {
+                PostCard(
+                    details.value,
+                    PostDetailsPlayerKey,
+                    DefaultPostCardController(
+                        navController = navController,
+                        coroutineScope = viewModel.viewModelScope,
+                        skipPostNavigation = true // already on post screen
+                    ),
+                    playerState
+                )
+            },
             comments.value,
             viewModel.collapsedState,
             viewModel.loadingMoreState,

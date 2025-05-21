@@ -1,15 +1,10 @@
 package com.looter.rall.ui.feedlist
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.runtime.Composable
-import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import com.looter.data.feed.models.RedditPost
-import com.looter.rall.ui.post.PostCardController
-import kotlinx.coroutines.launch
+import com.looter.rall.ui.post.DefaultPostCardController
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -20,49 +15,13 @@ fun FeedScreen(
     navController: NavController,
     subreddit: String? = null
 ) {
-    class PostCardControllerFeed : PostCardController {
-        override fun navigateToImage(post: RedditPost) {
-            viewModel.viewModelScope.launch {
-                viewModel.rememberPost(post)
-                navController.navigate("imageViewer/${post.postId}")
-            }
-        }
-
-        override fun navigateToVideo(post: RedditPost) {
-            viewModel.viewModelScope.launch {
-                viewModel.rememberPost(post)
-                navController.navigate("videoViewer/${post.postId}")
-            }
-        }
-
-        override fun navigateToGallery(urls: List<String>) {
-            val encoded = urls.joinToString(transform = ::encode)
-            navController.navigate("galleryViewer/$encoded")
-        }
-
-        override fun navigateToPost(post: RedditPost) {
-            viewModel.viewModelScope.launch {
-                viewModel.rememberPost(post)
-                navController.navigate("postDetail/${post.postId}")
-            }
-        }
-
-        override fun navigateToSubreddit(post: RedditPost) {
-            post.subredditName.let { subredditName ->
-                navController.navigate("subreddit/$subredditName")
-            }
-        }
-
-        override fun openLink(link: String) {
-            ContextCompat.startActivity(
-                navController.context, Intent(Intent.ACTION_VIEW, Uri.parse(link)), null
-            )
-        }
-    }
-
     FeedList(
         viewModel.getFeedFlow(subreddit),
-        controller = PostCardControllerFeed(),
+        controller = DefaultPostCardController(
+            navController = navController,
+            coroutineScope = viewModel.viewModelScope,
+            onPostRemember = { post -> viewModel.rememberPost(post) }
+        ),
         subreddit
     )
 }

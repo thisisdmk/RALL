@@ -67,25 +67,25 @@ fun ScreenTransition(context: Context) {
             "postDetail/{itemId}",
             arguments = listOf(navArgument("itemId") { type = StringType })
         ) {
-            PostDetailScreen(isFullScreen = false)
+            PostDetailScreen(isFullScreen = false, navController = navController)
         }
         composable(
             "imageViewer/{itemId}",
             arguments = listOf(navArgument("itemId") { type = StringType })
         ) {
-            PostDetailScreen(isFullScreen = true)
+            PostDetailScreen(isFullScreen = true, navController = navController)
         }
         composable(
             "videoViewer/{itemId}",
             arguments = listOf(navArgument("itemId") { type = StringType })
         ) {
-            PostDetailScreen(isFullScreen = true)
+            PostDetailScreen(isFullScreen = true, navController = navController)
         }
         composable(
             "galleryViewer/{urls}",
             arguments = listOf(navArgument("urls") { type = StringType })
         ) {
-            PostDetailScreen(isFullScreen = true)
+            PostDetailScreen(isFullScreen = true, navController = navController)
         }
     }
 }
