@@ -50,7 +50,7 @@ fun FeedList(
     ) {
         subreddit?.let {
             Text(
-                text = "r/$it",
+                text = if (it.startsWith("user/")) "u/${it.removePrefix("user/")}" else "r/$it",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
@@ -71,14 +71,16 @@ fun FeedList(
                 items = lazyPagingFeed,
                 key = { _, item -> item.redditName },
                 itemContent = { _, item ->
+                    val isUserFeed = subreddit?.startsWith("user/") == true
+                    val isSubredditFeed = subreddit != null && !isUserFeed
                     PostCard(
                         item = item,
                         screenKey = ListPlayerKey,
                         controller = controller,
                         playerState = playerState,
                         windowSize = windowSize,
-                        hideSubreddit = subreddit != null,
-                        showUsername = subreddit != null
+                        hideSubreddit = isSubredditFeed,
+                        showUsername = isSubredditFeed
                     )
                     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                 }

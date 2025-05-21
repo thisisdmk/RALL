@@ -58,4 +58,8 @@ class DefaultPostCardController(
             null
         )
     }
+
+    override fun navigateToUserPosts(username: String) {
+        navController.navigate("user/$username")
+    }
 } 

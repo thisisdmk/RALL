@@ -15,6 +15,12 @@ interface RedditApiService {
         @Query("after") lastItem: String?
     ): retrofit2.Response<String>
 
+    @GET("/user/{username}/submitted.json?raw_json=1&limit=50&always_show_media=1")
+    suspend fun getUserPostsAfter(
+        @Path("username") username: String,
+        @Query("after") lastItem: String?
+    ): retrofit2.Response<String>
+
     @GET("/comments/{id}.json?raw_json=1")
     suspend fun getPost(@Path("id") id: String?): retrofit2.Response<String>
 

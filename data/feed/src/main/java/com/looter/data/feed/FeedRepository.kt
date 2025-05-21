@@ -13,4 +13,7 @@ class FeedRepository @Inject constructor(
 
     suspend fun loadSubredditFeed(subreddit: String, afterKey: String?): List<RedditPost> =
         redditApi.getSubredditPostsAfter(subreddit, afterKey).mapNotNull { toRedditPost(it) }
+
+    suspend fun loadUserFeed(username: String, afterKey: String?): List<RedditPost> =
+        redditApi.getUserPostsAfter(username, afterKey).mapNotNull { toRedditPost(it) }
 }

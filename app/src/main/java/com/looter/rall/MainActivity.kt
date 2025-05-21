@@ -18,6 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.looter.rall.ui.feedlist.FeedScreen
+import com.looter.rall.ui.feedlist.UserFeedScreen
 import com.looter.rall.ui.postdetail.PostDetailScreen
 import com.looter.rall.ui.theme.AppTheme
 import com.looter.rall.videoplayer.LocalVideoPlayerController
@@ -61,6 +62,15 @@ fun ScreenTransition(context: Context) {
             FeedScreen(
                 navController = navController,
                 subreddit = backStackEntry.arguments?.getString("subredditName")
+            )
+        }
+        composable(
+            "user/{username}",
+            arguments = listOf(navArgument("username") { type = StringType })
+        ) { backStackEntry ->
+            UserFeedScreen(
+                navController = navController,
+                username = backStackEntry.arguments?.getString("username")!!
             )
         }
         composable(

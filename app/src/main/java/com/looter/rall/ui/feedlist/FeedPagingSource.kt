@@ -12,10 +12,17 @@ class FeedPagingSource(
     private val subreddit: String? = null
 ) : PagingSource<String, RedditPost>() {
 
-    private suspend fun loadFeed(afterKey: String?): List<RedditPost> = if (subreddit != null) {
-        feedRepository.loadSubredditFeed(subreddit, afterKey)
-    } else {
-        feedRepository.loadRAllFeed(afterKey)
+    private suspend fun loadFeed(afterKey: String?): List<RedditPost> = when {
+        subreddit?.startsWith("user/") == true -> {
+            val username = subreddit.removePrefix("user/")
+            feedRepository.loadUserFeed(username, afterKey)
+        }
+        subreddit != null -> {
+            feedRepository.loadSubredditFeed(subreddit, afterKey)
+        }
+        else -> {
+            feedRepository.loadRAllFeed(afterKey)
+        }
     }
 
     override suspend fun load(params: LoadParams<String>): LoadResult<String, RedditPost> {

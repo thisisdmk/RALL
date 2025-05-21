@@ -14,6 +14,8 @@ interface RedditApi {
 
     suspend fun getSubredditPostsAfter(subreddit: String, afterKey: String?): List<RedditPostJson>
 
+    suspend fun getUserPostsAfter(username: String, afterKey: String?): List<RedditPostJson>
+
     suspend fun getPostAndComments(postId: String): Pair<RedditPostJson, List<RedditCommentJson>>
 
     suspend fun getMoreComments(
@@ -34,6 +36,20 @@ class RedditApiImpl @Inject constructor(
         afterKey: String?
     ): List<RedditPostJson> =
         getPostsAfter(subreddit, afterKey)
+
+    override suspend fun getUserPostsAfter(
+        username: String,
+        afterKey: String?
+    ): List<RedditPostJson> =
+        try {
+            val response = service.getUserPostsAfter(username, afterKey).body()
+            println("getUserPostsAfter($username, $afterKey) response: $response")
+            extractRedditPostJsons(response)
+        } catch (e: Exception) {
+            println("Error in getUserPostsAfter: ${e.message}")
+            e.printStackTrace()
+            emptyList()
+        }
 
     private suspend fun getPostsAfter(
         subreddit: String? = null,

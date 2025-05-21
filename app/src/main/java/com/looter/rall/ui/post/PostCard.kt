@@ -100,7 +100,9 @@ fun PostCardLayout(
                 text = "u/${post.author}",
                 style = MaterialTheme.typography.labelSmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(16.dp, 4.dp, 0.dp, 0.dp)
+                modifier = Modifier
+                    .padding(16.dp, 4.dp, 0.dp, 0.dp)
+                    .clickable { controller.navigateToUserPosts(post.author) }
             )
         }
         Text(

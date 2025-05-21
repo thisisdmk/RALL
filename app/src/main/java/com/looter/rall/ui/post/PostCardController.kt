@@ -13,6 +13,7 @@ interface PostCardController {
     fun navigateToGallery(urls: List<String>)
     fun navigateToPost(post: RedditPost)
     fun navigateToSubreddit(post: RedditPost)
+    fun navigateToUserPosts(username: String)
     fun openLink(link: String)
 
     object PostCardControllerNoop : PostCardController {
@@ -21,6 +22,7 @@ interface PostCardController {
         override fun navigateToGallery(urls: List<String>) {}
         override fun navigateToPost(post: RedditPost) {}
         override fun navigateToSubreddit(post: RedditPost) {}
+        override fun navigateToUserPosts(username: String) {}
         override fun openLink(link: String) {}
     }
 }
