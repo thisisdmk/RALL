@@ -70,41 +70,53 @@ fun PostCardLayout(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top
     ) {
-        if (!hideSubreddit) {
-            Column(
-                modifier = Modifier.padding(12.dp, 12.dp, 16.dp, 0.dp)
-            ) {
-                TextButton(
+        Row(
+            modifier = Modifier.padding(12.dp, 12.dp, 16.dp, 0.dp),
+            verticalAlignment = Alignment.Top
+        ) {
+            if (!hideSubreddit || showUsername) {
+                Icon(
                     modifier = Modifier
-                        .height(24.dp),
-                    onClick = { controller.navigateToSubreddit(post) },
-                    contentPadding = PaddingValues(4.dp),
-                    shape = RectangleShape
-                ) {
-                    Icon(
-                        modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 0.dp),
-                        painter = painterResource(R.drawable.icon_communities),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        contentDescription = null
-                    )
-                    Text(
-                        text = "${post.subredditNamePrefixed} (${post.type.javaClass.simpleName})",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                        .padding(4.dp, 0.dp, 8.dp, 0.dp)
+                        .height(20.dp)
+                        .align(Alignment.CenterVertically),
+                    painter = painterResource(R.drawable.icon_communities),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    contentDescription = null
+                )
+            }
+            Column {
+                if (!hideSubreddit) {
+                    TextButton(
+                        modifier = Modifier.height(24.dp),
+                        onClick = { controller.navigateToSubreddit(post) },
+                        contentPadding = PaddingValues(4.dp),
+                        shape = RectangleShape
+                    ) {
+                        Text(
+                            text = "${post.subredditNamePrefixed} (${post.type.javaClass.simpleName})",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+                if (showUsername) {
+                    TextButton(
+                        modifier = Modifier.height(24.dp),
+                        onClick = { controller.navigateToUserPosts(post.author) },
+                        contentPadding = PaddingValues(4.dp, if (hideSubreddit) 4.dp else 0.dp, 4.dp, 4.dp),
+                        shape = RectangleShape
+                    ) {
+                        Text(
+                            text = "u/${post.author}",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
                 }
             }
         }
-        if (showUsername) {
-            Text(
-                text = "u/${post.author}",
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier
-                    .padding(16.dp, 4.dp, 0.dp, 0.dp)
-                    .clickable { controller.navigateToUserPosts(post.author) }
-            )
-        }
+
         Text(
             modifier = Modifier
                 .padding(16.dp, if (hideSubreddit && !showUsername) 16.dp else 8.dp, 16.dp, 16.dp)
