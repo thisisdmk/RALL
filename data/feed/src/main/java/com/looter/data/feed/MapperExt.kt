@@ -18,6 +18,7 @@ fun toRedditPost(json: RedditPostJson): RedditPost? {
     return RedditPost(
         json.title.trim(),
         json.subredditName,
+        json.author,
         json.numberOfComments,
         json.upvoteScore,
         type,

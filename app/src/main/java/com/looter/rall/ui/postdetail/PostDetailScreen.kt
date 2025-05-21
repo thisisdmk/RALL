@@ -66,7 +66,8 @@ fun PostDetailScreen(
                         coroutineScope = viewModel.viewModelScope,
                         skipPostNavigation = true // already on post screen
                     ),
-                    playerState
+                    playerState,
+                    showUsername = true
                 )
             },
             comments.value,

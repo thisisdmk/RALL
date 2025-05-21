@@ -61,7 +61,8 @@ fun PostCardLayout(
     linkContent: @Composable (Link) -> Unit = { NotImplemented(it) },
     textContent: @Composable (Text) -> Unit = { NotImplemented(it) },
     controller: PostCardController = PostCardController.PostCardControllerNoop,
-    hideSubreddit: Boolean = false
+    hideSubreddit: Boolean = false,
+    showUsername: Boolean = false
 ) {
     Column(
         modifier = Modifier
@@ -70,30 +71,41 @@ fun PostCardLayout(
         verticalArrangement = Arrangement.Top
     ) {
         if (!hideSubreddit) {
-            TextButton(
-                modifier = Modifier
-                    .padding(12.dp, 12.dp, 16.dp, 0.dp)
-                    .height(24.dp),
-                onClick = { controller.navigateToSubreddit(post) },
-                contentPadding = PaddingValues(4.dp),
-                shape = RectangleShape
+            Column(
+                modifier = Modifier.padding(12.dp, 12.dp, 16.dp, 0.dp)
             ) {
-                Icon(
-                    modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 0.dp),
-                    painter = painterResource(R.drawable.icon_communities),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    contentDescription = null
-                )
-                Text(
-                    text = "${post.subredditNamePrefixed} (${post.type.javaClass.simpleName})",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                TextButton(
+                    modifier = Modifier
+                        .height(24.dp),
+                    onClick = { controller.navigateToSubreddit(post) },
+                    contentPadding = PaddingValues(4.dp),
+                    shape = RectangleShape
+                ) {
+                    Icon(
+                        modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 0.dp),
+                        painter = painterResource(R.drawable.icon_communities),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        contentDescription = null
+                    )
+                    Text(
+                        text = "${post.subredditNamePrefixed} (${post.type.javaClass.simpleName})",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
+        }
+        if (showUsername) {
+            Text(
+                text = "u/${post.author}",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(16.dp, 4.dp, 0.dp, 0.dp)
+            )
         }
         Text(
             modifier = Modifier
-                .padding(16.dp, if (hideSubreddit) 16.dp else 8.dp, 16.dp, 16.dp)
+                .padding(16.dp, if (hideSubreddit && !showUsername) 16.dp else 8.dp, 16.dp, 16.dp)
                 .fillMaxWidth()
                 .clickable(onClick = { controller.navigateToPost(post) }),
             text = post.title,
@@ -177,12 +189,14 @@ fun PostCard(
     controller: PostCardController = PostCardController.PostCardControllerNoop,
     playerState: State<VideoPlayerController.PlayerState> = LocalVideoPlayerController.current.rememberPlayerState(),
     windowSize: IntSize = currentWindowSize(),
-    hideSubreddit: Boolean = false
+    hideSubreddit: Boolean = false,
+    showUsername: Boolean = false
 ) {
     PostCardLayout(
         post = item,
         controller = controller,
         hideSubreddit = hideSubreddit,
+        showUsername = showUsername,
         imageContent = { image ->
             val preview =
                 image.allResolutions.pickWidthGreaterThan(windowSize.width)
@@ -254,7 +268,7 @@ private fun aspectRatio(width: Int, height: Int): Float {
 }
 
 @OptIn(UnstableApi::class)
-@Preview
+@Preview(name = "Default PostCardLayout")
 @Composable
 private fun PostCardLayoutPreview() {
     AppTheme(true) {
@@ -263,7 +277,92 @@ private fun PostCardLayoutPreview() {
         ) {
             Surface {
                 PostCardLayout(
-                    RedditPost()
+                    RedditPost(
+                        title = "Sample Post Title",
+                        subredditNamePrefixed = "r/sample",
+                        author = "username",
+                        upvoteScore = "1234",
+                        numberOfComments = "56",
+                        type = PostContent.Text("Sample text content")
+                    )
+                )
+            }
+        }
+    }
+}
+
+@OptIn(UnstableApi::class)
+@Preview(name = "Hidden Subreddit, Show Username (Subreddit View)")
+@Composable
+private fun PostCardLayoutSubredditPreview() {
+    AppTheme(true) {
+        CompositionLocalProvider(
+            LocalVideoPlayerController provides VideoPlayerController(LocalContext.current)
+        ) {
+            Surface {
+                PostCardLayout(
+                    RedditPost(
+                        title = "Sample Post Title",
+                        subredditNamePrefixed = "r/sample",
+                        author = "username",
+                        upvoteScore = "1234",
+                        numberOfComments = "56",
+                        type = PostContent.Text("Sample text content")
+                    ),
+                    hideSubreddit = true,
+                    showUsername = true
+                )
+            }
+        }
+    }
+}
+
+@OptIn(UnstableApi::class)
+@Preview(name = "Show Subreddit, Hidden Username (Main Feed)")
+@Composable
+private fun PostCardLayoutMainFeedPreview() {
+    AppTheme(true) {
+        CompositionLocalProvider(
+            LocalVideoPlayerController provides VideoPlayerController(LocalContext.current)
+        ) {
+            Surface {
+                PostCardLayout(
+                    RedditPost(
+                        title = "Sample Post Title",
+                        subredditNamePrefixed = "r/sample",
+                        author = "username",
+                        upvoteScore = "1234",
+                        numberOfComments = "56",
+                        type = PostContent.Text("Sample text content")
+                    ),
+                    hideSubreddit = false,
+                    showUsername = false
+                )
+            }
+        }
+    }
+}
+
+@OptIn(UnstableApi::class)
+@Preview(name = "Show Both (Post Detail View)")
+@Composable
+private fun PostCardLayoutDetailPreview() {
+    AppTheme(true) {
+        CompositionLocalProvider(
+            LocalVideoPlayerController provides VideoPlayerController(LocalContext.current)
+        ) {
+            Surface {
+                PostCardLayout(
+                    RedditPost(
+                        title = "Sample Post Title",
+                        subredditNamePrefixed = "r/sample",
+                        author = "username",
+                        upvoteScore = "1234",
+                        numberOfComments = "56",
+                        type = PostContent.Text("Sample text content")
+                    ),
+                    hideSubreddit = false,
+                    showUsername = true
                 )
             }
         }

@@ -77,7 +77,8 @@ fun FeedList(
                         controller = controller,
                         playerState = playerState,
                         windowSize = windowSize,
-                        hideSubreddit = subreddit != null
+                        hideSubreddit = subreddit != null,
+                        showUsername = subreddit != null
                     )
                     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                 }

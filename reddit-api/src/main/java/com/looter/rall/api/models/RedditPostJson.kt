@@ -12,6 +12,7 @@ data class RedditPostJson(
     val title get() = data.getString("title")
     val fullName get() = data.getString("name")
     val subredditName get() = data.getString("subreddit_name_prefixed")
+    val author get() = data.getString("author")
     val numberOfComments get() = data.getInt("num_comments").toString()
     val upvoteScore get() = data.getInt("score").toString()
     val previews: MediaPreviews? by lazy {

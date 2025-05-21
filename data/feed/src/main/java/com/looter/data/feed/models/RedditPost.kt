@@ -12,6 +12,7 @@ private const val RedditPostThingType = "t3"
 data class RedditPost(
     val title: String = "",
     val subredditNamePrefixed: String = "",
+    val author: String = "",
     val numberOfComments: String = "0",
     val upvoteScore: String = "0",
     val type: PostContent = PostContent.Text(""),
