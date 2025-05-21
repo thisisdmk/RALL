@@ -62,7 +62,8 @@ fun FeedScreen(
 
     FeedList(
         viewModel.getFeedFlow(subreddit),
-        controller = PostCardControllerFeed()
+        controller = PostCardControllerFeed(),
+        subreddit
     )
 }
 

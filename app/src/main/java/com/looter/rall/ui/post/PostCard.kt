@@ -60,7 +60,8 @@ fun PostCardLayout(
     galleryContent: @Composable (Gallery) -> Unit = { NotImplemented(it) },
     linkContent: @Composable (Link) -> Unit = { NotImplemented(it) },
     textContent: @Composable (Text) -> Unit = { NotImplemented(it) },
-    controller: PostCardController = PostCardController.PostCardControllerNoop
+    controller: PostCardController = PostCardController.PostCardControllerNoop,
+    hideSubreddit: Boolean = false
 ) {
     Column(
         modifier = Modifier
@@ -68,29 +69,31 @@ fun PostCardLayout(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top
     ) {
-        TextButton(
-            modifier = Modifier
-                .padding(12.dp, 12.dp, 16.dp, 0.dp)
-                .height(24.dp),
-            onClick = { controller.navigateToSubreddit(post) },
-            contentPadding = PaddingValues(4.dp),
-            shape = RectangleShape
-        ) {
-            Icon(
-                modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 0.dp),
-                painter = painterResource(R.drawable.icon_communities),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                contentDescription = null
-            )
-            Text(
-                text = "${post.subredditNamePrefixed} (${post.type.javaClass.simpleName})",
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+        if (!hideSubreddit) {
+            TextButton(
+                modifier = Modifier
+                    .padding(12.dp, 12.dp, 16.dp, 0.dp)
+                    .height(24.dp),
+                onClick = { controller.navigateToSubreddit(post) },
+                contentPadding = PaddingValues(4.dp),
+                shape = RectangleShape
+            ) {
+                Icon(
+                    modifier = Modifier.padding(0.dp, 0.dp, 8.dp, 0.dp),
+                    painter = painterResource(R.drawable.icon_communities),
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    contentDescription = null
+                )
+                Text(
+                    text = "${post.subredditNamePrefixed} (${post.type.javaClass.simpleName})",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
         Text(
             modifier = Modifier
-                .padding(16.dp, 8.dp, 16.dp, 16.dp)
+                .padding(16.dp, if (hideSubreddit) 16.dp else 8.dp, 16.dp, 16.dp)
                 .fillMaxWidth()
                 .clickable(onClick = { controller.navigateToPost(post) }),
             text = post.title,
@@ -173,11 +176,13 @@ fun PostCard(
     screenKey: String,
     controller: PostCardController = PostCardController.PostCardControllerNoop,
     playerState: State<VideoPlayerController.PlayerState> = LocalVideoPlayerController.current.rememberPlayerState(),
-    windowSize: IntSize = currentWindowSize()
+    windowSize: IntSize = currentWindowSize(),
+    hideSubreddit: Boolean = false
 ) {
     PostCardLayout(
         post = item,
         controller = controller,
+        hideSubreddit = hideSubreddit,
         imageContent = { image ->
             val preview =
                 image.allResolutions.pickWidthGreaterThan(windowSize.width)
