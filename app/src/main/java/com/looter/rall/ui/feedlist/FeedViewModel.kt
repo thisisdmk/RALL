@@ -21,14 +21,26 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FeedViewModel @Inject constructor(
-    repository: FeedRepository,
+    private val repository: FeedRepository,
     @ApplicationContext private val context: Context
 ) : ViewModel() {
 
-    private val pagingSource: FeedPagingSource = FeedPagingSource(repository)//todo
+    private val feedStates = mutableMapOf<String?, Flow<PagingData<RedditPost>>>()
 
-    val feedFlow: Flow<PagingData<RedditPost>> = Pager(PagingConfig(pageSize = 50)) { pagingSource }
-        .flow.cachedIn(viewModelScope)
+    fun getFeedFlow(subreddit: String? = null): Flow<PagingData<RedditPost>> {
+        return feedStates.getOrPut(subreddit) {
+            Pager(
+                config = PagingConfig(
+                    pageSize = 50,
+                    enablePlaceholders = false,
+                    maxSize = 200
+                ),
+                initialKey = null
+            ) {
+                FeedPagingSource(repository, subreddit)
+            }.flow.cachedIn(viewModelScope)
+        }
+    }
 
     suspend fun rememberPost(post: RedditPost) {
         context.applicationContext.dataStore.edit { settings ->

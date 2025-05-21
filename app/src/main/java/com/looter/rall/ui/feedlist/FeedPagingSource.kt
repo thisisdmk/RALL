@@ -8,15 +8,24 @@ import com.looter.data.feed.FeedRepository
 import com.looter.data.feed.models.RedditPost
 
 class FeedPagingSource(
-    private val feedRepository: FeedRepository
+    private val feedRepository: FeedRepository,
+    private val subreddit: String? = null
 ) : PagingSource<String, RedditPost>() {
+
+    private suspend fun loadFeed(afterKey: String?): List<RedditPost> = if (subreddit != null) {
+        feedRepository.loadSubredditFeed(subreddit, afterKey)
+    } else {
+        feedRepository.loadRAllFeed(afterKey)
+    }
 
     override suspend fun load(params: LoadParams<String>): LoadResult<String, RedditPost> {
         return try {
             val afterKey = params.key
-            val res = feedRepository.loadFeed(afterKey)
+            val res = loadFeed(afterKey)
             LoadResult.Page(
-                data = res, prevKey = afterKey, nextKey = res.lastOrNull()?.redditName
+                data = res,
+                prevKey = null,
+                nextKey = res.lastOrNull()?.postKey
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -24,5 +33,8 @@ class FeedPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<String, RedditPost>): String? = null
+    override fun getRefreshKey(state: PagingState<String, RedditPost>): String? =
+        state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.data?.lastOrNull()?.postKey
+        }
 }

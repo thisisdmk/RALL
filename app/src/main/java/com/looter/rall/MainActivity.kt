@@ -55,6 +55,15 @@ fun ScreenTransition(context: Context) {
             FeedScreen(navController = navController)
         }
         composable(
+            "subreddit/{subredditName}",
+            arguments = listOf(navArgument("subredditName") { type = StringType })
+        ) { backStackEntry ->
+            FeedScreen(
+                navController = navController,
+                subreddit = backStackEntry.arguments?.getString("subredditName")
+            )
+        }
+        composable(
             "postDetail/{itemId}",
             arguments = listOf(navArgument("itemId") { type = StringType })
         ) {
@@ -65,30 +74,18 @@ fun ScreenTransition(context: Context) {
             arguments = listOf(navArgument("itemId") { type = StringType })
         ) {
             PostDetailScreen(isFullScreen = true)
-//            ImageScreen(it.arguments?.getString("imageUrl")!!)
         }
         composable(
             "videoViewer/{itemId}",
             arguments = listOf(navArgument("itemId") { type = StringType })
         ) {
             PostDetailScreen(isFullScreen = true)
-//            VideoScreen(
-//                it.arguments?.getString("videoUrl")!!,
-//                it.arguments?.getString("mediaKey")!!
-//            ) {
-//                navController.navigate(
-//                    "postDetail/${it.arguments?.getString("postId")!!}",
-//                    NavOptions.Builder().setPopUpTo("feed", false).build()
-//                )
-//            }
         }
         composable(
             "galleryViewer/{urls}",
             arguments = listOf(navArgument("urls") { type = StringType })
         ) {
-           //todo передавать itemId
             PostDetailScreen(isFullScreen = true)
-//            GalleryScreen(it.arguments?.getString("urls")!!.split(",").map(String::trim))
         }
     }
 }

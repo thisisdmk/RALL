@@ -8,7 +8,9 @@ class FeedRepository @Inject constructor(
     private val redditApi: RedditApi,
 ) {
 
-    suspend fun loadFeed(afterKey: String?): List<RedditPost> =
-        redditApi.getPostsAfter(afterKey).mapNotNull { toRedditPost(it) }
+    suspend fun loadRAllFeed(afterKey: String?): List<RedditPost> =
+        redditApi.getRAllPostsAfter(afterKey).mapNotNull { toRedditPost(it) }
 
+    suspend fun loadSubredditFeed(subreddit: String, afterKey: String?): List<RedditPost> =
+        redditApi.getSubredditPostsAfter(subreddit, afterKey).mapNotNull { toRedditPost(it) }
 }

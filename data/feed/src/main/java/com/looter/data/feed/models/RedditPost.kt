@@ -11,13 +11,15 @@ private const val RedditPostThingType = "t3"
 @Serializable
 data class RedditPost(
     val title: String = "",
-    val subredditName: String = "",
+    val subredditNamePrefixed: String = "",
     val numberOfComments: String = "0",
     val upvoteScore: String = "0",
     val type: PostContent = PostContent.Text(""),
     val postId: String = "",
 ) {
     val redditName: String get() = "${RedditPostThingType}_$postId"
+    val postKey: String get() = redditName
+    val subredditName: String get() = subredditNamePrefixed.replace("r/","")
 }
 
 fun RedditPost.toJson() = Json.encodeToString(this)
@@ -77,7 +79,7 @@ data class GalleryItem(
 fun main() {
     val post = RedditPost(
         title = "Cat",
-        subredditName = "r/cat",
+        subredditNamePrefixed = "r/cat",
         numberOfComments = "44",
         upvoteScore = "666",
         type = PostContent.Gallery(

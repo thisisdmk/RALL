@@ -83,7 +83,7 @@ fun PostCardLayout(
                 contentDescription = null
             )
             Text(
-                text = "${post.subredditName} (${post.type.javaClass.simpleName})",
+                text = "${post.subredditNamePrefixed} (${post.type.javaClass.simpleName})",
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

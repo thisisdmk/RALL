@@ -17,7 +17,8 @@ import java.nio.charset.StandardCharsets
 @Composable
 fun FeedScreen(
     viewModel: FeedViewModel = hiltViewModel(),
-    navController: NavController
+    navController: NavController,
+    subreddit: String? = null
 ) {
     class PostCardControllerFeed : PostCardController {
         override fun navigateToImage(post: RedditPost) {
@@ -47,7 +48,9 @@ fun FeedScreen(
         }
 
         override fun navigateToSubreddit(post: RedditPost) {
-            //todo
+            post.subredditName.let { subredditName ->
+                navController.navigate("subreddit/$subredditName")
+            }
         }
 
         override fun openLink(link: String) {
@@ -58,7 +61,7 @@ fun FeedScreen(
     }
 
     FeedList(
-        viewModel.feedFlow,
+        viewModel.getFeedFlow(subreddit),
         controller = PostCardControllerFeed()
     )
 }
